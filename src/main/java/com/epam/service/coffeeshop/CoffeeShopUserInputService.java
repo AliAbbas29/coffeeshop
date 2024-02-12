@@ -22,7 +22,7 @@ public class CoffeeShopUserInputService implements UserInputService {
      */
     public String getUserInput() {
         System.out.println();
-        String userInput = SCANNER.nextLine();
+        String userInput = handleUserInput();
         System.out.println();
         return userInput;
     }
@@ -36,5 +36,16 @@ public class CoffeeShopUserInputService implements UserInputService {
      */
     public List<String> getOrderedItemsByUserInput(String userInput) {
         return asList(userInput.split(","));
+    }
+
+    private String handleUserInput() {
+        String userInput = "";
+        while (userInput.isEmpty()) {
+            userInput = SCANNER.nextLine();
+            if (userInput.isEmpty()) {
+                System.out.println("Please provide any input!");
+            }
+        }
+        return userInput;
     }
 }

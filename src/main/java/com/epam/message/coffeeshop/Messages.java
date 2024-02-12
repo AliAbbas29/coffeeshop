@@ -9,8 +9,7 @@ public class Messages {
             Please type:
             'Menu' to check our menu,
             'Bonus' to check our bonus program,
-            'Order' to make an order.
-            """;
+            'Order' to make an order.""";
 
     public static final String INVALID_ACTION = "Please choose valid option!";
 
