@@ -54,7 +54,23 @@ public class CoffeeShopCostsServiceTest {
     }
 
     @Test
-    public void testGenerateTotalCostReceiptForBeveragesWithSnack() {
+    public void testGenerateTotalCostReceiptForBeveragesAndSnack() {
+        // When
+        List<Product> productList = List.of(
+                new Product(
+                        new Offering("Small coffee", new BigDecimal("2.55"), BEVERAGE),
+                        null),
+                new Product(
+                        new Offering("Bacon roll", new BigDecimal("4.53"), SNACK),
+                        null));
+        // Action
+        BigDecimal actualCosts = service.calculateTotalCosts(productList);
+        // Assert
+        assertEquals(new BigDecimal("7.08"), actualCosts);
+    }
+
+    @Test
+    public void testGenerateTotalCostReceiptForBeveragesWithExtrasAndSnack() {
         // When
         List<Product> productList = List.of(
                 new Product(
