@@ -10,6 +10,14 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.epam.constants.coffeeshop.MenuItems.BACON_ROLL;
+import static com.epam.constants.coffeeshop.MenuItems.EXTRA_MILK;
+import static com.epam.constants.coffeeshop.MenuItems.FOAMED_MILK;
+import static com.epam.constants.coffeeshop.MenuItems.LARGE_COFFEE;
+import static com.epam.constants.coffeeshop.MenuItems.MEDIUM_COFFEE;
+import static com.epam.constants.coffeeshop.MenuItems.ORANGE_JUICE;
+import static com.epam.constants.coffeeshop.MenuItems.SMALL_COFFEE;
+import static com.epam.constants.coffeeshop.MenuItems.SPECIAL_ROAST;
 import static com.epam.model.OfferingType.BEVERAGE;
 import static com.epam.model.OfferingType.SNACK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,24 +44,48 @@ public class CoffeeShopProductsServiceTest {
 
         List<Product> expectedProducts = List.of(
                 new Product(
-                        new Offering("Small coffee", new BigDecimal("2.55"), BEVERAGE),
-                        new Extras("Extra milk", new BigDecimal("0.32"))),
+                        new Offering(SMALL_COFFEE, new BigDecimal("2.55"), BEVERAGE),
+                        new Extras(EXTRA_MILK, new BigDecimal("0.32"))),
                 new Product(
-                        new Offering("Medium coffee", new BigDecimal("3.05"), BEVERAGE),
-                        new Extras("Special roast", new BigDecimal("0.95"))),
+                        new Offering(MEDIUM_COFFEE, new BigDecimal("3.05"), BEVERAGE),
+                        new Extras(SPECIAL_ROAST, new BigDecimal("0.95"))),
                 new Product(
-                        new Offering("Bacon roll", new BigDecimal("4.53"), SNACK),
+                        new Offering(BACON_ROLL, new BigDecimal("4.53"), SNACK),
                         null),
                 new Product(
-                        new Offering("Large coffee", new BigDecimal("3.55"), BEVERAGE),
+                        new Offering(LARGE_COFFEE, new BigDecimal("3.55"), BEVERAGE),
                         null),
                 new Product(
-                        new Offering("Freshly squeezed orange juice (0.25l)", new BigDecimal("3.95"), BEVERAGE),
+                        new Offering(ORANGE_JUICE, new BigDecimal("3.95"), BEVERAGE),
                         null),
                 new Product(
-                        new Offering("Large coffee", new BigDecimal("3.55"), BEVERAGE),
-                        new Extras("Foamed milk", new BigDecimal("0.51")))
+                        new Offering(LARGE_COFFEE, new BigDecimal("3.55"), BEVERAGE),
+                        new Extras(FOAMED_MILK, new BigDecimal("0.51")))
         );
+        // Action
+        List<Product> actualProducts = service.getProducts(shoppingList);
+        // Assert
+        assertEquals(expectedProducts, actualProducts);
+    }
+
+    @Test
+    public void testGetCoffeeAndJuiceAndOrangeJuiceProducts() {
+        // When
+        List<String> shoppingList = List.of(
+                "coffee",
+                "juice",
+                "orange juice");
+
+        List<Product> expectedProducts = List.of(
+                new Product(
+                        new Offering(MEDIUM_COFFEE, new BigDecimal("3.05"), BEVERAGE),
+                        null),
+                new Product(
+                        new Offering(ORANGE_JUICE, new BigDecimal("3.95"), BEVERAGE),
+                        null),
+                new Product(
+                        new Offering(ORANGE_JUICE, new BigDecimal("3.95"), BEVERAGE),
+                        null));
         // Action
         List<Product> actualProducts = service.getProducts(shoppingList);
         // Assert

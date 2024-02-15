@@ -1,6 +1,6 @@
 package com.epam.service.coffeeshop;
 
-import com.epam.Generated;
+import com.epam.util.ExcludeJacocoScanGenerated;
 import com.epam.service.BonusesService;
 
 import java.io.File;
@@ -51,7 +51,7 @@ public class CoffeeShopBonusesService implements BonusesService {
         fillUserBonusesMapFromFile();
     }
 
-    @Generated
+    @ExcludeJacocoScanGenerated
     private void fillUserBonusesMapFromFile() {
         File file = new File(FILE_NAME);
         if (file.exists()) {
@@ -67,7 +67,7 @@ public class CoffeeShopBonusesService implements BonusesService {
         }
     }
 
-    @Generated
+    @ExcludeJacocoScanGenerated
     private void saveFile() {
         try (FileWriter writer = new FileWriter(FILE_NAME)) {
             for (Map.Entry<String, Integer> entry : USER_BONUSES.entrySet()) {

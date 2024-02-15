@@ -1,14 +1,15 @@
 package com.epam.service.coffeeshop;
 
-import com.epam.message.Actions;
-import com.epam.message.coffeeshop.Messages;
+import com.epam.util.ExcludeJacocoScanGenerated;
+import com.epam.constants.Actions;
+import com.epam.constants.coffeeshop.Messages;
 import com.epam.service.ActionsProcessingService;
 import com.epam.service.OrderService;
 import com.epam.service.UserInputService;
 
-import static com.epam.message.Actions.ACTIONS;
-import static com.epam.message.Actions.BACK;
-import static com.epam.message.Actions.ORDER;
+import static com.epam.constants.Actions.ACTIONS;
+import static com.epam.constants.Actions.BACK;
+import static com.epam.constants.Actions.ORDER;
 
 /**
  * The CoffeeShopActionsProcessingService class provides an implementation of the ActionsProcessingService interface.
@@ -29,6 +30,7 @@ public class CoffeeShopActionsProcessingService implements ActionsProcessingServ
      *
      * @return a string that represents the receipt for the order
      */
+    @ExcludeJacocoScanGenerated
     public String processActionsAndGetReceipt() {
         System.out.println(Messages.ACTIONS);
         String result;

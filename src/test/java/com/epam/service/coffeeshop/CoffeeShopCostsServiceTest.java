@@ -10,6 +10,13 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.epam.constants.coffeeshop.MenuItems.BACON_ROLL;
+import static com.epam.constants.coffeeshop.MenuItems.EXTRA_MILK;
+import static com.epam.constants.coffeeshop.MenuItems.LARGE_COFFEE;
+import static com.epam.constants.coffeeshop.MenuItems.MEDIUM_COFFEE;
+import static com.epam.constants.coffeeshop.MenuItems.ORANGE_JUICE;
+import static com.epam.constants.coffeeshop.MenuItems.SMALL_COFFEE;
+import static com.epam.constants.coffeeshop.MenuItems.SPECIAL_ROAST;
 import static com.epam.model.OfferingType.BEVERAGE;
 import static com.epam.model.OfferingType.SNACK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,10 +36,10 @@ public class CoffeeShopCostsServiceTest {
         // When
         List<Product> productList = List.of(
                 new Product(
-                        new Offering("Small coffee", new BigDecimal("2.55"), BEVERAGE),
-                        new Extras("Extra milk", new BigDecimal("0.32"))),
+                        new Offering(SMALL_COFFEE, new BigDecimal("2.55"), BEVERAGE),
+                        new Extras(EXTRA_MILK, new BigDecimal("0.32"))),
                 new Product(
-                        new Offering("Freshly squeezed orange juice (0.25l)", new BigDecimal("3.95"), BEVERAGE),
+                        new Offering(ORANGE_JUICE, new BigDecimal("3.95"), BEVERAGE),
                         null));
         // Action
         BigDecimal actualCosts = service.calculateTotalCosts(productList);
@@ -45,7 +52,7 @@ public class CoffeeShopCostsServiceTest {
         // When
         List<Product> productList = List.of(
                 new Product(
-                        new Offering("Bacon roll", new BigDecimal("4.53"), SNACK),
+                        new Offering(BACON_ROLL, new BigDecimal("4.53"), SNACK),
                         null));
         // Action
         BigDecimal actualCosts = service.calculateTotalCosts(productList);
@@ -58,10 +65,10 @@ public class CoffeeShopCostsServiceTest {
         // When
         List<Product> productList = List.of(
                 new Product(
-                        new Offering("Small coffee", new BigDecimal("2.55"), BEVERAGE),
+                        new Offering(SMALL_COFFEE, new BigDecimal("2.55"), BEVERAGE),
                         null),
                 new Product(
-                        new Offering("Bacon roll", new BigDecimal("4.53"), SNACK),
+                        new Offering(BACON_ROLL, new BigDecimal("4.53"), SNACK),
                         null));
         // Action
         BigDecimal actualCosts = service.calculateTotalCosts(productList);
@@ -74,13 +81,13 @@ public class CoffeeShopCostsServiceTest {
         // When
         List<Product> productList = List.of(
                 new Product(
-                        new Offering("Small coffee", new BigDecimal("2.55"), BEVERAGE),
-                        new Extras("Extra milk", new BigDecimal("0.32"))),
+                        new Offering(SMALL_COFFEE, new BigDecimal("2.55"), BEVERAGE),
+                        new Extras(EXTRA_MILK, new BigDecimal("0.32"))),
                 new Product(
-                        new Offering("Medium coffee", new BigDecimal("3.05"), BEVERAGE),
-                        new Extras("Special roast", new BigDecimal("0.95"))),
+                        new Offering(MEDIUM_COFFEE, new BigDecimal("3.05"), BEVERAGE),
+                        new Extras(SPECIAL_ROAST, new BigDecimal("0.95"))),
                 new Product(
-                        new Offering("Bacon roll", new BigDecimal("4.53"), SNACK),
+                        new Offering(BACON_ROLL, new BigDecimal("4.53"), SNACK),
                         null));
         // Action
         BigDecimal actualCosts = service.calculateTotalCosts(productList);
@@ -93,37 +100,37 @@ public class CoffeeShopCostsServiceTest {
         // When
         List<Product> productList = List.of(
                 new Product(
-                        new Offering("Small coffee", new BigDecimal("2.55"), BEVERAGE),
-                        new Extras("Extra milk", new BigDecimal("0.32"))),
+                        new Offering(SMALL_COFFEE, new BigDecimal("2.55"), BEVERAGE),
+                        new Extras(EXTRA_MILK, new BigDecimal("0.32"))),
                 new Product(
-                        new Offering("Medium coffee", new BigDecimal("3.05"), BEVERAGE),
-                        new Extras("Special roast", new BigDecimal("0.95"))),
+                        new Offering(MEDIUM_COFFEE, new BigDecimal("3.05"), BEVERAGE),
+                        new Extras(SPECIAL_ROAST, new BigDecimal("0.95"))),
                 new Product(
-                        new Offering("Bacon roll", new BigDecimal("4.53"), SNACK),
+                        new Offering(BACON_ROLL, new BigDecimal("4.53"), SNACK),
                         null),
                 new Product(
-                        new Offering("Large coffee", new BigDecimal("3.55"), BEVERAGE),
+                        new Offering(LARGE_COFFEE, new BigDecimal("3.55"), BEVERAGE),
                         null),
                 new Product(
-                        new Offering("Freshly squeezed orange juice (0.25l)", new BigDecimal("3.95"), BEVERAGE),
+                        new Offering(ORANGE_JUICE, new BigDecimal("3.95"), BEVERAGE),
                         null),
                 new Product(
-                        new Offering("Large coffee", new BigDecimal("3.55"), BEVERAGE),
+                        new Offering(LARGE_COFFEE, new BigDecimal("3.55"), BEVERAGE),
                         null),
                 new Product(
-                        new Offering("Medium coffee", new BigDecimal("3.05"), BEVERAGE),
+                        new Offering(MEDIUM_COFFEE, new BigDecimal("3.05"), BEVERAGE),
                         null),
                 new Product(
-                        new Offering("Small coffee", new BigDecimal("2.55"), BEVERAGE),
+                        new Offering(SMALL_COFFEE, new BigDecimal("2.55"), BEVERAGE),
                         null),
                 new Product(
-                        new Offering("Freshly squeezed orange juice (0.25l)", new BigDecimal("3.95"), BEVERAGE),
+                        new Offering(ORANGE_JUICE, new BigDecimal("3.95"), BEVERAGE),
                         null),
                 new Product(
-                        new Offering("Large coffee", new BigDecimal("3.55"), BEVERAGE),
+                        new Offering(LARGE_COFFEE, new BigDecimal("3.55"), BEVERAGE),
                         null),
                 new Product(
-                        new Offering("Medium coffee", new BigDecimal("3.05"), BEVERAGE),
+                        new Offering(MEDIUM_COFFEE, new BigDecimal("3.05"), BEVERAGE),
                         null)
         );
         // Action

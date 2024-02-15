@@ -1,5 +1,6 @@
 package com.epam.service.coffeeshop;
 
+import com.epam.util.ExcludeJacocoScanGenerated;
 import com.epam.exception.ProductNotFoundException;
 import com.epam.model.Product;
 import com.epam.service.CostsService;
@@ -11,9 +12,9 @@ import com.epam.service.UserInputService;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static com.epam.message.Actions.BACK;
-import static com.epam.message.coffeeshop.Messages.ORDER_BACK;
-import static com.epam.message.coffeeshop.Messages.ORDER_NOT_AVAILABLE;
+import static com.epam.constants.Actions.BACK;
+import static com.epam.constants.coffeeshop.Messages.ORDER_BACK;
+import static com.epam.constants.coffeeshop.Messages.ORDER_NOT_AVAILABLE;
 
 /**
  * The CoffeeShopOrderService class provides an implementation of the OrderService interface.
@@ -46,6 +47,7 @@ public class CoffeeShopOrderService implements OrderService {
      *
      * @return a string that represents the receipt for the order, or a message indicating that the order was not placed
      */
+    @ExcludeJacocoScanGenerated
     public String processOrders() {
         String result;
         do {

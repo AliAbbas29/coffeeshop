@@ -8,30 +8,40 @@ import com.epam.service.ProductsService;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import static com.epam.constants.coffeeshop.MenuItems.BACON_ROLL;
+import static com.epam.constants.coffeeshop.MenuItems.EXTRA_MILK;
+import static com.epam.constants.coffeeshop.MenuItems.FOAMED_MILK;
+import static com.epam.constants.coffeeshop.MenuItems.LARGE_COFFEE;
+import static com.epam.constants.coffeeshop.MenuItems.MEDIUM_COFFEE;
+import static com.epam.constants.coffeeshop.MenuItems.ORANGE_JUICE;
+import static com.epam.constants.coffeeshop.MenuItems.SMALL_COFFEE;
+import static com.epam.constants.coffeeshop.MenuItems.SPECIAL_ROAST;
 import static com.epam.model.OfferingType.BEVERAGE;
 import static com.epam.model.OfferingType.SNACK;
 import static java.util.Objects.nonNull;
 
 /**
  * Products service related to Coffee Shop.
- * Maintains a list of available offerings and extras, and can generate a list of Product objects based on a shopping list.
+ * Maintains maps of available offerings and extras, and can generate a list of Product objects based on a shopping list.
  */
 public class CoffeeShopProductsService implements ProductsService {
-    private final List<Offering> availableOfferings = new ArrayList<>();
-    private final List<Extras> availableExtras = new ArrayList<>();
+    private final Map<String, Offering> availableOfferings = new HashMap<>();
+    private final Map<String, Extras> availableExtras = new HashMap<>();
 
     {
-        availableOfferings.add(new Offering("Small coffee", new BigDecimal("2.55"), BEVERAGE));
-        availableOfferings.add(new Offering("Medium coffee", new BigDecimal("3.05"), BEVERAGE));
-        availableOfferings.add(new Offering("Large coffee", new BigDecimal("3.55"), BEVERAGE));
-        availableOfferings.add(new Offering("Bacon roll", new BigDecimal("4.53"), SNACK));
-        availableOfferings.add(new Offering("Freshly squeezed orange juice (0.25l)", new BigDecimal("3.95"), BEVERAGE));
+        availableOfferings.put(SMALL_COFFEE, new Offering(SMALL_COFFEE, new BigDecimal("2.55"), BEVERAGE));
+        availableOfferings.put(MEDIUM_COFFEE, new Offering(MEDIUM_COFFEE, new BigDecimal("3.05"), BEVERAGE));
+        availableOfferings.put(LARGE_COFFEE, new Offering(LARGE_COFFEE, new BigDecimal("3.55"), BEVERAGE));
+        availableOfferings.put(BACON_ROLL, new Offering(BACON_ROLL, new BigDecimal("4.53"), SNACK));
+        availableOfferings.put(ORANGE_JUICE, new Offering(ORANGE_JUICE, new BigDecimal("3.95"), BEVERAGE));
 
-        availableExtras.add(new Extras("Extra milk", new BigDecimal("0.32")));
-        availableExtras.add(new Extras("Foamed milk", new BigDecimal("0.51")));
-        availableExtras.add(new Extras("Special roast", new BigDecimal("0.95")));
+        availableExtras.put(EXTRA_MILK, new Extras(EXTRA_MILK, new BigDecimal("0.32")));
+        availableExtras.put(FOAMED_MILK, new Extras(FOAMED_MILK, new BigDecimal("0.51")));
+        availableExtras.put(SPECIAL_ROAST, new Extras(SPECIAL_ROAST, new BigDecimal("0.95")));
     }
 
     /**
@@ -56,18 +66,23 @@ public class CoffeeShopProductsService implements ProductsService {
     }
 
     private Offering getOffering(String productName) {
-        for (Offering offering : this.availableOfferings) {
-            if (offering.getName().toLowerCase().contains(productName.trim().toLowerCase())) {
-                return new Offering(offering);
+        String productToFind = productName.trim();
+        for (Offering offering : this.availableOfferings.values()) {
+            if (("coffee").equalsIgnoreCase(productToFind)) {
+                return availableOfferings.get(MEDIUM_COFFEE);
+            } else if ("juice".equalsIgnoreCase(productToFind) || "orange juice".equalsIgnoreCase(productToFind)) {
+                return availableOfferings.get(ORANGE_JUICE);
+            } else if (offering.getName().equalsIgnoreCase(productToFind)) {
+                return availableOfferings.get(offering.getName());
             }
         }
-        throw new ProductNotFoundException(productName);
+        throw new ProductNotFoundException(productToFind);
     }
 
     private Extras getExtras(String extrasName) {
-        for (Extras extras : this.availableExtras) {
-            if (extras.getName().toLowerCase().contains(extrasName.trim().toLowerCase())) {
-                return new Extras(extras);
+        for (Extras extras : this.availableExtras.values()) {
+            if (extras.getName().equalsIgnoreCase(extrasName.trim())) {
+                return availableExtras.get(extras.getName());
             }
         }
         throw new ProductNotFoundException(extrasName);

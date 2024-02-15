@@ -9,6 +9,10 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.epam.constants.coffeeshop.MenuItems.EXTRA_MILK;
+import static com.epam.constants.coffeeshop.MenuItems.MEDIUM_COFFEE;
+import static com.epam.constants.coffeeshop.MenuItems.SMALL_COFFEE;
+import static com.epam.constants.coffeeshop.MenuItems.SPECIAL_ROAST;
 import static com.epam.model.OfferingType.BEVERAGE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -25,11 +29,11 @@ public class CoffeeShopReceiptServiceTest {
         // When
         List<Product> products = List.of(
                 new Product(
-                        new Offering("Small coffee", new BigDecimal("2.55"), BEVERAGE),
-                        new Extras("Extra milk", new BigDecimal("0.32"))),
+                        new Offering(SMALL_COFFEE, new BigDecimal("2.55"), BEVERAGE),
+                        new Extras(EXTRA_MILK, new BigDecimal("0.32"))),
                 new Product(
-                        new Offering("Medium coffee", new BigDecimal("3.05"), BEVERAGE),
-                        new Extras("Special roast", new BigDecimal("0.95"))));
+                        new Offering(MEDIUM_COFFEE, new BigDecimal("3.05"), BEVERAGE),
+                        new Extras(SPECIAL_ROAST, new BigDecimal("0.95"))));
         BigDecimal totalCost = new BigDecimal("6.87");
 
         // Action

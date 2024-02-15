@@ -5,11 +5,11 @@ import com.epam.service.UserInputService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.epam.message.Actions.ACTIONS;
-import static com.epam.message.Actions.BACK;
-import static com.epam.message.Actions.BONUS;
-import static com.epam.message.Actions.MENU;
-import static com.epam.message.Actions.ORDER;
+import static com.epam.constants.Actions.ACTIONS;
+import static com.epam.constants.Actions.BACK;
+import static com.epam.constants.Actions.BONUS;
+import static com.epam.constants.Actions.MENU;
+import static com.epam.constants.Actions.ORDER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;

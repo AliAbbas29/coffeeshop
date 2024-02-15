@@ -1,6 +1,6 @@
 package com.epam.service.coffeeshop;
 
-import com.epam.Generated;
+import com.epam.util.ExcludeJacocoScanGenerated;
 import com.epam.service.UserInputService;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class CoffeeShopUserInputService implements UserInputService {
      *
      * @return a string that represents the user's input
      */
-    @Generated
+    @ExcludeJacocoScanGenerated
     public String getUserInput() {
         System.out.println();
         String userInput = handleUserInput();
@@ -40,7 +40,7 @@ public class CoffeeShopUserInputService implements UserInputService {
         return asList(userInput.split(","));
     }
 
-    @Generated
+    @ExcludeJacocoScanGenerated
     private String handleUserInput() {
         String userInput = "";
         while (userInput.isEmpty()) {

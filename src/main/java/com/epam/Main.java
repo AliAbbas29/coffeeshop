@@ -17,27 +17,40 @@ import com.epam.service.coffeeshop.CoffeeShopProductsService;
 import com.epam.service.coffeeshop.CoffeeShopReceiptService;
 import com.epam.service.coffeeshop.CoffeeShopUserInputService;
 
-import static com.epam.message.coffeeshop.Messages.ORDER_FINISH;
-import static com.epam.message.coffeeshop.Messages.USER_MESSAGE;
-import static com.epam.message.coffeeshop.Messages.WELCOME_MESSAGE;
+import static com.epam.constants.coffeeshop.Messages.BONUSES;
+import static com.epam.constants.coffeeshop.Messages.ORDER_FINISH;
+import static com.epam.constants.coffeeshop.Messages.USER_MESSAGE;
+import static com.epam.constants.coffeeshop.Messages.WELCOME_MESSAGE;
 
 public class Main {
-    public static void main(String[] args) {
-        UserInputService userInputService = new CoffeeShopUserInputService();
-        ProductsService productsService = new CoffeeShopProductsService();
-        BonusesService bonusesService = new CoffeeShopBonusesService();
-        CostsService costsService = new CoffeeShopCostsService(bonusesService);
-        ReceiptService receiptService = new CoffeeShopReceiptService();
-        OrderService orderService = new CoffeeShopOrderService(userInputService, productsService, costsService, receiptService);
-        ActionsProcessingService processingService = new CoffeeShopActionsProcessingService(userInputService, orderService);
+    private static final UserInputService userInputService = new CoffeeShopUserInputService();
+    private static final BonusesService bonusesService = new CoffeeShopBonusesService();
+    private static final ProductsService productsService = new CoffeeShopProductsService();
+    private static final CostsService costsService = new CoffeeShopCostsService(bonusesService);
+    private static final ReceiptService receiptService = new CoffeeShopReceiptService();
+    private static final OrderService orderService = new CoffeeShopOrderService(userInputService, productsService, costsService, receiptService);
+    private static final ActionsProcessingService processingService = new CoffeeShopActionsProcessingService(userInputService, orderService);
 
+    public static void main(String[] args) {
+        welcomeUser();
+        informAboutBonuses();
+        processUserActions();
+    }
+
+    private static void welcomeUser() {
         System.out.println(WELCOME_MESSAGE);
         System.out.println(USER_MESSAGE);
         String userName = userInputService.getUserInput();
         User.setCurrentUser(userName);
-        int bonusesCount = bonusesService.getBonusPoints(userName);
-        System.out.println("The user " + userName + " have " + bonusesCount + " bonus points.");
+    }
 
+    private static void informAboutBonuses() {
+        String userName = User.getCurrentUser();
+        int bonusesCount = bonusesService.getBonusPoints(userName);
+        System.out.printf(BONUSES, userName, bonusesCount);
+    }
+
+    private static void processUserActions() {
         String receipt = processingService.processActionsAndGetReceipt();
         System.out.println(receipt);
         System.out.println(ORDER_FINISH);

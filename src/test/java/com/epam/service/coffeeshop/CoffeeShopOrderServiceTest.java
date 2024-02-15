@@ -13,7 +13,8 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static com.epam.message.Actions.BACK;
+import static com.epam.constants.Actions.BACK;
+import static com.epam.constants.coffeeshop.MenuItems.SMALL_COFFEE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -43,7 +44,7 @@ public class CoffeeShopOrderServiceTest {
     public void testProcessOrder() {
         // When
         String userInput = "Small coffee with milk";
-        List<String> orderedItems = List.of("Small coffee", "milk");
+        List<String> orderedItems = List.of(SMALL_COFFEE, "milk");
         List<Product> products = List.of(mock(Product.class));
         BigDecimal totalCosts = new BigDecimal("3.00");
         String receipt = "Receipt: Small coffee with milk - 3.00";
@@ -83,7 +84,7 @@ public class CoffeeShopOrderServiceTest {
     public void testProcessOrderWhenThrows() {
         // When
         String userInput = "Small coffee with milk";
-        List<String> orderedItems = List.of("Small coffee", "milk");
+        List<String> orderedItems = List.of(SMALL_COFFEE, "milk");
         when(userInputService.getUserInput()).thenReturn(userInput);
         when(userInputService.getOrderedItemsByUserInput(userInput)).thenReturn(orderedItems);
         when(productsService.getProducts(orderedItems)).thenThrow(ProductNotFoundException.class);
