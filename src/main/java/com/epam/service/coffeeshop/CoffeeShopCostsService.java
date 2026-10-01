@@ -11,6 +11,7 @@ import com.epam.service.CostsService;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 import static com.epam.model.OfferingType.BEVERAGE;
@@ -27,48 +28,54 @@ public class CoffeeShopCostsService implements CostsService {
     private final BonusesService bonusesService;
 
     public CoffeeShopCostsService(BonusesService bonusesService) {
-        this.bonusesService = bonusesService;
+        this.bonusesService = Objects.requireNonNull(bonusesService, "BonusesService must not be null");
     }
 
-    /**
-     * Calculates the total cost of the given list of products.
-     * The method applies discounts and special offers as necessary, and updates user bonus points.
-     *
-     * @param products a list of products to calculate the total cost for
-     * @return the total cost of the products
-     */
+    @Override
     public BigDecimal calculateTotalCosts(List<Product> products) {
-        boolean anyBeveragePresent = isAnyProductPresentByOfferingType(products, BEVERAGE);
-        boolean anySnackPresent = isAnyProductPresentByOfferingType(products, SNACK);
-        boolean anyExtrasPresent = products.stream().anyMatch(product -> nonNull(product.extras()));
+        if (products == null || products.isEmpty()) {
+            return BigDecimal.ZERO;
+        }
 
-        if (anyBeveragePresent) {
+        boolean hasBeverage = isAnyProductPresentByOfferingType(products, BEVERAGE);
+        boolean hasSnack = isAnyProductPresentByOfferingType(products, SNACK);
+        boolean hasExtras = products.stream().anyMatch(product -> nonNull(product.extras()));
+
+        if (hasBeverage) {
             processFreeFifthBeverageBonus(products);
-            if (anySnackPresent && anyExtrasPresent) {
-                makeFreeCheapestExtras(products);
+            if (hasSnack && hasExtras) {
+                applyFreeCheapestExtras(products);
             }
         }
-        return products.stream().map(Product::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return products.stream()
+                .map(Product::getPrice)
+                .filter(Objects::nonNull)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     private boolean isAnyProductPresentByOfferingType(List<Product> products, OfferingType type) {
-        return products.stream().anyMatch(product -> type == product.offering().getType());
+        return products.stream()
+                .filter(Objects::nonNull)
+                .map(Product::offering)
+                .filter(Objects::nonNull)
+                .anyMatch(offering -> type.equals(offering.getType()));
     }
 
     private void processFreeFifthBeverageBonus(List<Product> products) {
         String userName = User.getCurrentUser();
         int currentBonusPoints = bonusesService.getBonusPoints(userName);
-        int bonusCountAfterDiscount = makeFreeEveryFifthBeverage(products, currentBonusPoints);
+        int bonusCountAfterDiscount = calculateAndApplyFreeBeverages(products, currentBonusPoints);
         bonusesService.saveBonusPoints(userName, bonusCountAfterDiscount);
     }
 
-    private int makeFreeEveryFifthBeverage(List<Product> products, int currentBonusPoints) {
+    private int calculateAndApplyFreeBeverages(List<Product> products, int currentBonusPoints) {
         List<Offering> beverages = getBeverages(products);
 
         int actualBonus = currentBonusPoints;
         for (Offering beverage : beverages) {
-            actualBonus = actualBonus + 1;
-            if (actualBonus == FREE_BEVERAGE_BONUS_MIN_AMOUNT) {
+            actualBonus++;
+            if (actualBonus >= FREE_BEVERAGE_BONUS_MIN_AMOUNT) {
                 beverage.setPrice(BigDecimal.ZERO);
                 actualBonus = 0;
             }
@@ -78,15 +85,21 @@ public class CoffeeShopCostsService implements CostsService {
 
     private List<Offering> getBeverages(List<Product> products) {
         return products.stream()
+                .filter(Objects::nonNull)
                 .map(Product::offering)
-                .filter(offering -> BEVERAGE == offering.getType()).toList();
+                .filter(Objects::nonNull)
+                .filter(offering -> BEVERAGE.equals(offering.getType()))
+                .toList();
     }
 
-    private void makeFreeCheapestExtras(List<Product> products) {
+    private void applyFreeCheapestExtras(List<Product> products) {
         Extras cheapestExtras = products.stream()
+                .filter(Objects::nonNull)
                 .map(Product::extras)
                 .filter(Objects::nonNull)
-                .min(Comparator.comparing(Extras::getPrice)).get();
+                .min(Comparator.comparing(Extras::getPrice, Comparator.nullsLast(Comparator.naturalOrder())))
+                .orElseThrow(() -> new NoSuchElementException("No extras found to apply free discount"));
+
         cheapestExtras.setName(cheapestExtras.getName() + " (Free Extras)");
         cheapestExtras.setPrice(BigDecimal.ZERO);
     }
